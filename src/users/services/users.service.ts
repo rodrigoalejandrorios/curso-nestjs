@@ -16,7 +16,7 @@ export class UsersService {
     try {
       return await this.userRepository.save(body);
     } catch (error) {
-      throw new Error(error);
+      throw ErrorManager.createSignatureError(error.message);
     }
   }
 
