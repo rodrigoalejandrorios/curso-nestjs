@@ -1,5 +1,14 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { ROLES } from 'src/constants/roles';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { ACCESS_LEVEL, ROLES } from 'src/constants/roles';
+import { ProjectsEntity } from 'src/projects/entities/projects.entity';
+import { UsersEntity } from '../entities/users.entity';
 
 export class UserDTO {
   @IsNotEmpty()
@@ -32,31 +41,45 @@ export class UserDTO {
 }
 
 export class UserUpdateDTO {
-    @IsOptional()
-    @IsString()
-    firstName: string;
-  
-    @IsOptional()
-    @IsString()
-    lastName: string;
-  
-    @IsOptional()
-    @IsNumber()
-    age: number;
-  
-    @IsOptional()
-    @IsString()
-    email: string;
-  
-    @IsOptional()
-    @IsString()
-    username: string;
-  
-    @IsOptional()
-    @IsString()
-    password: string;
-  
-    @IsOptional()
-    @IsEnum(ROLES)
-    role: ROLES;
-  }
+  @IsOptional()
+  @IsString()
+  firstName: string;
+
+  @IsOptional()
+  @IsString()
+  lastName: string;
+
+  @IsOptional()
+  @IsNumber()
+  age: number;
+
+  @IsOptional()
+  @IsString()
+  email: string;
+
+  @IsOptional()
+  @IsString()
+  username: string;
+
+  @IsOptional()
+  @IsString()
+  password: string;
+
+  @IsOptional()
+  @IsEnum(ROLES)
+  role: ROLES;
+}
+
+export class UserToProjectDTO {
+  @IsNotEmpty()
+  @IsUUID()
+  user: UsersEntity;
+
+  @IsNotEmpty()
+  @IsUUID()
+  project: ProjectsEntity;
+
+  @IsNotEmpty()
+  @IsEnum(ACCESS_LEVEL)
+  accessLevel: ACCESS_LEVEL;
+}
