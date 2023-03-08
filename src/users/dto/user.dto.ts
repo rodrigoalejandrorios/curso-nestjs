@@ -75,7 +75,7 @@ export class UserToProjectDTO {
   @IsUUID()
   user: UsersEntity;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsUUID()
   project: ProjectsEntity;
 
