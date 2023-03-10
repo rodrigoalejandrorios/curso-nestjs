@@ -10,6 +10,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { ApiHeader, ApiHeaders, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AccessLevel } from 'src/auth/decorators/access-level.decorator';
 import { AdminAccess } from 'src/auth/decorators/admin.decorator';
 import { PublicAccess } from 'src/auth/decorators/public.decorator';
@@ -21,6 +22,7 @@ import { ProjectsEntity } from 'src/projects/entities/projects.entity';
 import { UserDTO, UserToProjectDTO, UserUpdateDTO } from '../dto/user.dto';
 import { UsersService } from '../services/users.service';
 
+@ApiTags('Users')
 @Controller('users')
 @UseGuards(AuthGuard, RolesGuard, AccessLevelGuard)
 export class UsersController {
@@ -38,11 +40,24 @@ export class UsersController {
     return await this.usersService.findUsers();
   }
 
+  @ApiParam({
+    name: 'id',
+  })
+  @ApiHeader({
+    name: 'codrr_token',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'No se encontro resultado'
+  })
   @Get(':id')
   public async findUserById(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.usersService.findUserById(id);
   }
 
+  @ApiParam({
+    name: 'projectId',
+  })
   @AccessLevel('OWNER')
   @Post('add-to-project/:projectId')
   public async addToProject(
@@ -55,6 +70,9 @@ export class UsersController {
     });
   }
 
+  @ApiParam({
+    name: 'id',
+  })
   @Put('edit/:id')
   public async updateUser(
     @Param('id', new ParseUUIDPipe()) id: string,
@@ -63,6 +81,9 @@ export class UsersController {
     return await this.usersService.updateUser(body, id);
   }
 
+  @ApiParam({
+    name: 'id',
+  })
   @Delete('delete/:id')
   public async deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
     return await this.usersService.deleteUser(id);
