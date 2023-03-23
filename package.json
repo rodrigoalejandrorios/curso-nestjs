@@ -12,7 +12,7 @@
     "start": "nest start",
     "start:dev": "export NODE_ENV=develop && nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "export NODE_ENV=develop && node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -20,8 +20,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "orm:init": "typeorm-ts-node-esm -d ./src/config/data.source.ts",
-    "m:gen": "export NODE_ENV=develop && npm run orm:init migration:generate",
-    "m:run": "export NODE_ENV=develop && npm run orm:init migration:run"
+    "m:gen:dev": "export NODE_ENV=develop && npm run orm:init migration:generate",
+    "m:run:dev": "export NODE_ENV=develop && npm run orm:init migration:run",
+    "m:gen": "export NODE_ENV=production && npm run orm:init migration:generate",
+    "m:run": "export NODE_ENV=production && npm run orm:init migration:run"
   },
   "dependencies": {
     "@nestjs/axios": "^2.0.0",
