@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { statusMessages } from '../constants/errors';
 
 export class ErrorManager extends Error {
   constructor({
@@ -6,17 +7,22 @@ export class ErrorManager extends Error {
     message,
   }: {
     type: keyof typeof HttpStatus;
-    message: string;
+    message?: string;
   }) {
-    super(`${type} :: ${message}`);
+    super(`${type} :: ${message || statusMessages[type]}`);
   }
 
-  public static createSignatureError(message: string) {
+  public static createSignatureError(error: string | Error) {
+    const message = typeof error === 'string' ? error : error.message;
     const name = message.split(' :: ')[0];
     if (name) {
-      throw new HttpException(message, HttpStatus[name]);
+      throw new HttpException(
+        message,
+        HttpStatus[name as keyof typeof HttpStatus]
+      );
     } else {
       throw new HttpException(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
+
